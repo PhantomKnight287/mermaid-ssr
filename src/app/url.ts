@@ -1,5 +1,5 @@
 export function getDomain() {
-  return process.env.NEXT_PUBLIC_DOMAIN	
-    ? process.env.NEXT_PUBLIC_DOMAIN
-    : "http://localhost:3010"
+  return process.env.NODE_ENV === "development"
+    ? "http://localhost:3010"
+    : "https://mermaid.chemistrypadhley.com";
 }
