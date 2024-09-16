@@ -18,6 +18,9 @@ RUN apk add --no-cache \
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 
+# Create a non-root user
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
 # Set the working directory in the container
 WORKDIR /app
 
@@ -32,6 +35,12 @@ COPY . .
 
 # Build the Next.js application
 RUN pnpm run build
+
+# Change ownership of the /app directory to the non-root user
+RUN chown -R appuser:appgroup /app
+
+# Switch to the non-root user
+USER appuser
 
 # Expose the port the app runs on
 EXPOSE 3000
